@@ -2,16 +2,20 @@ import React, {useState, useEffect} from 'react';
 import { MenuItem, FormControl, Select, Card, CardContent } from "@material-ui/core";
 import './App.css';
 import InfoBox from './Infobox.js';
-import MaP from './Map.js';
+import Map from './Map.js';
 import Table from './Table.js';
 import { sortData } from "./util.js";
 import LineGraph from "./Linegraph.js";
+import "leaflet/dist/leaflet.css";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const[country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
+  const [mapCenter,setMapCenter] = useState({lat: 34.80746, lng: -40.4796});
+const [mapZoom, setMapZoom] = useState(3);
+
   useEffect(() => {
    fetch("https://disease.sh/v3/covid-19/all")
    .then(response =>response.json())
@@ -77,7 +81,7 @@ function App() {
        <InfoBox title="Deaths" cases ={countryInfo.todayDeaths} total={countryInfo.deaths} />
     </div>
     
-      <MaP />
+      <Map/>
       </div>
       <Card className="app_right">
         <CardContent>
@@ -91,6 +95,6 @@ function App() {
       </Card>
     </div>
   );
-}
+};
 
 export default App;
