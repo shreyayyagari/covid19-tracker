@@ -4,7 +4,7 @@ import './App.css';
 import InfoBox from './Infobox.js';
 import Map from './Map.js';
 import Table from './Table.js';
-import { sortData } from "./util.js";
+import { sortData, prettyPrintStat } from "./util.js";
 import LineGraph from "./Linegraph.js";
 import "leaflet/dist/leaflet.css";
 
@@ -83,9 +83,10 @@ function App() {
       </div>
       
      <div className="app__stats">
-       <InfoBox title="Coronavirus Cases" cases={countryInfo.todayCases} total ={countryInfo.cases}/>
-       <InfoBox title="Recovered" cases= {countryInfo.todayRecovered} total={countryInfo.recovered}/>
-       <InfoBox title="Deaths" cases ={countryInfo.todayDeaths} total={countryInfo.deaths} />
+       <InfoBox isRed active={casesType === "cases"} onClick={(e) => setCasesType('cases')} 
+       title="Coronavirus Cases" cases={prettyPrintStat(countryInfo.todayCases)} total ={prettyPrintStat(countryInfo.cases)}/>
+       <InfoBox active={casesType === "recovered"} onClick={(e) => setCasesType('recovered')} title="Recovered" cases= {prettyPrintStat(countryInfo.todayRecovered)} total={prettyPrintStat(countryInfo.recovered)}/>
+       <InfoBox isRed active={casesType === "deaths"} onClick={(e) => setCasesType('deaths')} title="Deaths" cases ={prettyPrintStat(countryInfo.todayDeaths)} total={prettyPrintStat(countryInfo.deaths)} />
     </div>
     
       <Map center ={mapCenter} zoom={mapZoom} countries={mapCountries} casesType={casesType} />
@@ -94,8 +95,8 @@ function App() {
         <CardContent>
           <h3>Live Cases by Country</h3>
           <Table countries ={tableData} />
-          <h3>Worldwide New Cases</h3>
-          <LineGraph />
+          <h3 className="app__graphtitle">Worldwide New {casesType}</h3>
+          <LineGraph className="app__graph" casesType={casesType}/>
         </CardContent>
      
       
